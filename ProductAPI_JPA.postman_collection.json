@@ -1,0 +1,216 @@
+{
+  "info": {
+    "name": "ProductAPI_JPA",
+    "_postman_id": "c7f67c9e-5d8f-4c2f-9b76-2f2c6b2a6f01",
+    "description": "Postman collection for Product API in Session05.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Post Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"productName\": \"Sach Java\",\n  \"description\": \"Hoc Spring Boot\",\n  \"price\": 30000,\n  \"stock\": 10\n}"
+        },
+        "url": "{{baseUrl}}/api/v1/products"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", () => pm.response.to.have.status(201));",
+              "pm.test(\"Response has id\", () => pm.expect(pm.response.json()).to.have.property(\"id\"));",
+              "const created = pm.response.json();",
+              "pm.collectionVariables.set(\"productId\", created.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get All",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/v1/products"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Response is an array\", () => pm.expect(pm.response.json()).to.be.an(\"array\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get By Id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/v1/products/{{productId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Response contains id\", () => pm.expect(pm.response.json()).to.have.property(\"id\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get By Id False",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/v1/products/99999"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 404\", () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Post Invalid",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"productName\": \"\",\n  \"description\": \"\",\n  \"price\": null,\n  \"stock\": null\n}"
+        },
+        "url": "{{baseUrl}}/api/v1/products"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 400\", () => pm.response.to.have.status(400));",
+              "pm.test(\"Response has validation fields\", () => pm.expect(pm.response.json()).to.have.property(\"productName\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Put Update",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"productName\": \"Sach Java Nang Cao\",\n  \"description\": \"Hoc Spring Boot nang cao\",\n  \"price\": 35000,\n  \"stock\": 12\n}"
+        },
+        "url": "{{baseUrl}}/api/v1/products/{{productId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Response contains id\", () => pm.expect(pm.response.json()).to.have.property(\"id\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Patch Update",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"productName\": \"Sach Java Update\",\n  \"price\": 40000\n}"
+        },
+        "url": "{{baseUrl}}/api/v1/products/{{productId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Response contains id\", () => pm.expect(pm.response.json()).to.have.property(\"id\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delete",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/api/v1/products/{{productId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "productId",
+      "value": ""
+    }
+  ]
+}
